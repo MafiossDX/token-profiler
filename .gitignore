@@ -1,0 +1,58 @@
+# Local/private docs
+*.local.md
+*.private.md
+*.scratch.md
+docs/local/
+
+# Temporary experiments
+spike/
+spikes/
+
+# Dependencies
+node_modules/
+
+# Build / typecheck outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Test / coverage outputs
+coverage/
+.nyc_output/
+
+# Local profiler data
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.db
+*.db-shm
+*.db-wal
+
+# Local secrets / env
+.env
+.env.*
+!.env.example
+
+# Debug and raw captures
+**/debug-capture/
+*.har
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local agent/tool state
+.agents/
+.ai/
+.claude/
+.codex/
+.serena/

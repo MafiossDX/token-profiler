@@ -1,0 +1,23 @@
+{
+  "//": "Type-checking only. Node runs the .ts files directly via native type stripping (Node >=22.18 unflagged; 22.6-22.17 need --experimental-strip-types, which package.json scripts pass). No emit, no dist/.",
+  "compilerOptions": {
+    "target": "es2023",
+    "lib": ["es2023"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "types": ["node"],
+
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "noEmit": true,
+
+    "strict": true,
+    "exactOptionalPropertyTypes": false,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts", "bin/**/*.ts"],
+  "//exclude": "src/ui/client is the Preact + Vite UI client (ADR-0015). It is browser code with JSX, bundled by Vite, and has its own tsconfig — the root (nodenext / erasableSyntaxOnly / no DOM lib) does not apply to it.",
+  "exclude": ["src/ui/client"]
+}

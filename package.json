@@ -1,0 +1,31 @@
+{
+  "name": "token-profiler",
+  "version": "0.1.0",
+  "description": "Local observability tool for LLM/AI Agent token traffic. Collects and reports byte-basis context metrics (UCV/CTV/amplification/reuse) and raw-data exports; the UI adds a heuristic diagnostic reading (reference zones, duplicate-context ranking) but not cause assertions, synthetic scores, or optimization.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "token-profiler": "./bin/token-profiler.ts"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev:ui": "vite build --watch",
+    "test": "node --experimental-strip-types --test test/*.test.ts",
+    "test:ui": "vitest run",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p src/ui/client/tsconfig.json",
+    "check": "npm run typecheck && npm run build && npm test && npm run test:ui"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.10.6",
+    "@testing-library/preact": "^3.2.4",
+    "@types/node": "^22.18.0",
+    "jsdom": "^26.1.0",
+    "preact": "^10.29.8",
+    "typescript": "^5.8.0",
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
+  }
+}

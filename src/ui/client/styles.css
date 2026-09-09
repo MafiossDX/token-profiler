@@ -1,0 +1,213 @@
+:root {
+  --bg: #f6f7f8; --panel: #fff; --ink: #1b1f23; --muted: #6a737d;
+  --line: #e1e4e8; --accent: #2f6feb; --app: #3b82f6; --proto: #64748b;
+  --unknown: #d1d5db; --warn: #b7791f; --warn-bg: #fff8e1;
+  --dup: #e36209; --ucv: #2aa19a;
+  --z-ok: #1a7f37; --z-watch: #2f6feb; --z-warn: #b7791f; --z-crit: #cf222e;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font: 13px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--ink); background: var(--bg); }
+header { display: flex; align-items: baseline; gap: 12px; padding: 10px 16px;
+  background: var(--ink); color: #fff; }
+header h1 { font-size: 14px; margin: 0; font-weight: 600; letter-spacing: .02em; }
+.badge { font-size: 11px; padding: 2px 7px; border-radius: 10px; background: #30363d; color: #d0d7de; }
+.badge.warn-badge { background: var(--warn); color: #fff; margin-left: 8px; }
+.layout { display: grid; grid-template-columns: 240px 1fr; gap: 0; align-items: start; }
+aside { border-right: 1px solid var(--line); height: calc(100vh - 41px); overflow-y: auto;
+  background: var(--panel); }
+aside h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+  margin: 0; padding: 12px 12px 6px; }
+.task-row { position: relative; border-bottom: 1px solid var(--line); }
+.task-item { display: block; width: 100%; text-align: left; border: 0; background: none;
+  padding: 8px 30px 8px 12px; cursor: pointer; font: inherit; color: inherit; }
+.task-item:hover { background: #f0f3f6; }
+.task-item.active { background: #e8f0fe; box-shadow: inset 3px 0 0 var(--accent); }
+.task-item .tid { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; }
+.task-item .meta { color: var(--muted); font-size: 11px; margin-top: 2px; }
+.task-del { position: absolute; top: 6px; right: 6px; width: 20px; height: 20px; line-height: 18px;
+  padding: 0; border: 1px solid var(--line); border-radius: 4px; background: #fff; color: var(--muted);
+  cursor: pointer; font: inherit; text-align: center; }
+.task-del:hover { border-color: var(--warn); color: var(--warn); background: var(--warn-bg); }
+.task-del.running { border-color: var(--warn); color: var(--warn); opacity: .6; }
+.task-del.running:hover { opacity: 1; }
+main { padding: 16px 20px 60px; }
+/* Panels stack single-column (ADR-0016) — no page-length sticky sidebar.
+   `.two-col` pairs exactly one panel with its companion (Timeline + Request
+   detail, abtest-c5.html) and collapses to one column on narrow screens. */
+.two-col { display: grid; grid-template-columns: minmax(0, .9fr) minmax(260px, 1.1fr); gap: 14px;
+  align-items: start; }
+@media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+.linklike { border: 0; background: none; padding: 0; margin: 0; font: inherit; color: var(--accent);
+  cursor: pointer; text-decoration: underline; }
+section { background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+  padding: 14px 16px; margin-bottom: 16px; }
+.sec-head { display: flex; align-items: baseline; gap: 2px; margin: 0 0 4px; }
+.sec-head h3 { margin: 0; font-size: 13px; }
+.sub { color: var(--muted); font-size: 12px; margin: 0 0 10px; }
+.note { color: var(--muted); font-size: 12px; margin: 8px 0 0; }
+.warn { background: var(--warn-bg); border-left: 3px solid var(--warn); color: var(--warn);
+  padding: 6px 10px; border-radius: 3px; }
+table { border-collapse: collapse; width: 100%; font-size: 12px; }
+th, td { text-align: right; padding: 4px 8px; border-bottom: 1px solid var(--line); }
+th:first-child, td:first-child { text-align: left; }
+tbody tr.clickable { cursor: pointer; }
+tbody tr.clickable:hover { background: #f0f3f6; }
+tbody tr.sel { background: #e8f0fe; }
+.kv { display: grid; grid-template-columns: 220px 1fr; gap: 2px 12px; font-size: 12px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; font-variant-numeric: tabular-nums; }
+.big { font-size: 26px; font-weight: 700; }
+.mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.bar { display: flex; height: 22px; border-radius: 3px; overflow: hidden; border: 1px solid var(--line);
+  margin: 6px 0; }
+.bar span { display: block; }
+.seg-app { background: var(--app); } .seg-proto { background: var(--proto); }
+.seg-unknown { background: var(--unknown); }
+.legend { display: flex; gap: 14px; font-size: 11px; color: var(--muted); margin-top: 4px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px;
+  vertical-align: middle; }
+.dim { opacity: .35; }
+.filters { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; background: var(--panel);
+  border: 1px solid var(--line); border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; }
+.filters label { font-size: 12px; }
+.filters select { font: inherit; padding: 2px 4px; }
+.copy { border: 1px solid var(--line); background: #fff; border-radius: 4px; cursor: pointer;
+  font: inherit; font-size: 11px; padding: 1px 6px; margin-left: 6px; }
+.dl { display: block; margin: 4px 0; }
+.dl + .note { margin-top: 8px; }
+.dl.viewdl { margin-top: 12px; padding-top: 8px; border-top: 1px dashed var(--line); font-size: 11px; }
+.scrollx { overflow-x: auto; }
+th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+th.sortable:hover { color: var(--ink); }
+th.sortable .arrow { color: var(--accent); }
+svg text { font-size: 10px; fill: var(--muted); }
+.empty { color: var(--muted); padding: 40px 0; text-align: center; }
+a { color: var(--accent); }
+
+/* --- diagnostic layout (ADR-0016) --- */
+/* Two-column hero: judgement metrics + Facts on the left, the big score on
+   the right (abtest-c5.html) — "look at Current amplification first" has to
+   read as the heaviest thing on the panel, not a same-weight metric tile. */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 14px; align-items: stretch; }
+.hero-main { min-width: 0; }
+.score { border-radius: 6px; padding: 16px; color: #fff; display: flex; flex-direction: column;
+  justify-content: center; }
+.score-label { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; opacity: .85; }
+.score-num { font-size: 54px; font-weight: 800; line-height: 1; margin-top: 6px; }
+.score-zone { font-size: 12px; opacity: .9; margin-top: 10px; }
+.zone-ok { background: var(--z-ok); }
+.zone-watch { background: var(--z-watch); }
+.zone-warn { background: var(--z-warn); }
+.zone-crit { background: var(--z-crit); }
+@media (max-width: 960px) { .hero { grid-template-columns: 1fr; } .score-num { font-size: 42px; } }
+
+.metric-row, .nextfocus { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+.nextfocus { grid-template-columns: repeat(3, 1fr); }
+.metric, .focus-card { border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; background: var(--bg); }
+/* .focus-card is a <button> (ADR-0017: cards jump to that thread / request). */
+.focus-card { display: block; width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.focus-card:hover:not(:disabled) { border-color: var(--accent); }
+.focus-card:disabled { cursor: default; opacity: .55; }
+.metric-head { display: flex; align-items: baseline; justify-content: space-between; gap: 2px; }
+.m-label { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.m-val { font-size: 17px; font-weight: 700; margin-top: 3px; font-variant-numeric: tabular-nums; }
+.m-cap { font-size: 11px; color: var(--muted); margin-top: 3px; }
+@media (max-width: 620px) { .metric-row, .nextfocus { grid-template-columns: repeat(2, 1fr); } }
+
+.seg-ucv { background: var(--ucv); }
+.bar.mini { height: 14px; margin: 0; border-radius: 3px; }
+
+.thead-4, .trow-4 { display: grid; grid-template-columns: 90px 1fr 108px 60px; gap: 8px; align-items: center; }
+.thead-4 { font-size: 10px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted);
+  margin: 14px 0 4px; }
+.trow-4 { min-height: 30px; border-top: 1px solid var(--line); font-size: 12px; }
+.trow-4 .r, .thead-4 .r { text-align: right; font-variant-numeric: tabular-nums; }
+
+.toolbar { display: flex; gap: 14px; align-items: center; margin: 10px 0; font-size: 12px; }
+.toolbar select { font: inherit; padding: 2px 4px; }
+
+/* Task heading + Export control (ADR-0018 §4) — Export moves out of a numbered
+   bottom panel to sit beside the Task id; wraps to its own row on narrow
+   screens rather than the two fighting for horizontal space. */
+.task-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  flex-wrap: wrap; margin-bottom: 12px; }
+.task-head h2 { font-size: 15px; margin: 0; }
+.task-head details.export { position: relative; }
+.task-head details.export summary { cursor: pointer; list-style: none; font-size: 12px;
+  color: var(--accent); border: 1px solid var(--line); border-radius: 4px; padding: 3px 10px;
+  background: #fff; }
+.task-head details.export summary::-webkit-details-marker { display: none; }
+.task-head details.export[open] summary { border-color: var(--accent); }
+.task-head details.export > div, .task-head details.export > p { margin-top: 8px; }
+.task-head details.export .dl { font-size: 12px; }
+
+/* Pager (ADR-0018 §1) — Prev/Next + range/page count, set above and below the
+   request 調査 list; reuses `.copy`-style buttons rather than new markup. */
+.pager { display: flex; gap: 10px; align-items: center; margin: 8px 0; font-size: 12px; }
+.pager button { border: 1px solid var(--line); background: #fff; border-radius: 4px; cursor: pointer;
+  font: inherit; font-size: 11px; padding: 2px 8px; }
+.pager button:disabled { opacity: .4; cursor: default; }
+.pager .sub { margin: 0; }
+
+/* Mini duplicate-bytes bar inside the request 調査 table cell — bounded width
+   so it fits alongside its numeric value instead of the unconstrained
+   `.bar.mini` used in the panel-5 thread rows. Selector stacks onto
+   `.bar.mini` (specificity 0,3,0 vs 0,2,0) so it wins the height/display
+   fight rather than silently losing to the wider rule. */
+.bar.mini.dup-bar { display: inline-block; width: 60px; height: 8px; margin-left: 6px;
+  border-radius: 2px; overflow: hidden; background: var(--line); vertical-align: middle; }
+.bar.mini.dup-bar span { display: block; height: 100%; }
+
+/* Collapsible Pareto strip inside 「3 · request 調査」 — default closed
+   (ADR-0018 §1: the summary line stays, the chart is opt-in). */
+details.pareto-details summary { cursor: pointer; font-size: 12px; color: var(--muted);
+  margin: 8px 0 4px; }
+
+.tl-seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
+  margin-bottom: 8px; }
+.tl-seg button { border: 0; background: #fff; color: var(--muted); font: inherit; font-size: 11px;
+  padding: 3px 10px; cursor: pointer; }
+.tl-seg button.on { background: var(--ink); color: #fff; }
+.tl-seg button + button { border-left: 1px solid var(--line); }
+
+/* One card + one sizing rule for every inline chart (threshold plot, Pareto
+   strip, timeline minimap/lanes) so they share a consistent visual weight
+   instead of each picking its own ad-hoc viewBox aspect ratio. The viewBox on
+   each chart is tuned to this box's aspect ratio (see each component), so
+   `height: auto` fills it exactly with no letterboxing. */
+.chart-wrap { border: 1px solid var(--line); border-radius: 6px; background: #fff; overflow-x: auto;
+  margin: 6px 0; }
+.chart-svg { width: 100%; height: 330px; display: block; }
+/* Pareto only needs a compact view of the cumulative thresholds. */
+.pareto-details .chart-svg { height: 165px; }
+.hit { fill: transparent; cursor: pointer; }
+
+.split { display: flex; height: 24px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden;
+  margin: 6px 0 2px; }
+.split span { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px;
+  white-space: nowrap; overflow: hidden; }
+.split .new { background: var(--ucv); }
+.split .dup { background: var(--dup); }
+
+/* ❔ help tooltip (docs/ui-reading-guide.md deep links) — a bespoke toggletip,
+   not the native `title` attribute, so it can hold a focusable link, a
+   readable width, and hover/keyboard/touch/Escape behavior (see HelpTip.tsx).
+   `.helptip` wraps both the button and the popover so pointer movement
+   between them never crosses outside the element that tracks hover. */
+.helptip { position: relative; display: inline-block; margin-left: 4px; }
+.help-icon { border: 0; background: none; padding: 0; font-size: 12px; line-height: 1;
+  color: var(--muted); cursor: help; vertical-align: middle; }
+.help-icon:hover, .help-icon:focus-visible { color: var(--accent); }
+.help-pop { position: absolute; top: calc(100% + 4px); left: 0; z-index: 20; width: 270px;
+  max-width: calc(100vw - 24px); background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px; box-shadow: 0 4px 14px rgba(0,0,0,.14); padding: 9px 11px; font-size: 12px;
+  line-height: 1.5; color: var(--ink); }
+.help-pop p { margin: 0 0 6px; }
+.help-pop a { font-size: 11px; }
+.help-pop.align-right { left: auto; right: 0; }
+.help-pop.above { top: auto; bottom: calc(100% + 4px); }
+/* Inside the colored score box, the muted grey icon would sink into the
+   background — lighten it for contrast against `.score`'s solid fill. */
+.score .help-icon { color: rgba(255, 255, 255, .85); }
+.score .help-icon:hover, .score .help-icon:focus-visible { color: #fff; }

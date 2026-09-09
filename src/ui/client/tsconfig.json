@@ -1,0 +1,23 @@
+{
+  "//": "UI client (Preact + Vite, ADR-0015). Bundled by Vite, so it is NOT bound by the root tsconfig's erasableSyntaxOnly / nodenext constraints — it targets the browser and uses JSX. The root tsconfig excludes this directory; `npm run typecheck` type-checks it separately.",
+  "compilerOptions": {
+    "target": "es2022",
+    "lib": ["es2023", "dom", "dom.iterable"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["vite/client", "vitest/globals"],
+
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+
+    "strict": true,
+    "exactOptionalPropertyTypes": false,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+}
